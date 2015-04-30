@@ -1,4 +1,4 @@
-var iOSParsePlugin = {
+var ParsePushPlugin = {
     initialize: function(appId, clientKey, successCallback, errorCallback) {
         cordova.exec(
             successCallback,
