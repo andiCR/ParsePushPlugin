@@ -107,6 +107,7 @@ void MethodSwizzle(Class c, SEL originalSelector) {
 {
     MethodSwizzle([self class], @selector(application:didRegisterForRemoteNotificationsWithDeviceToken:));
     MethodSwizzle([self class], @selector(application:didReceiveRemoteNotification:));
+    MethodSwizzle([self class], @selector(application:didFailToRegisterForRemoteNotificationsWithError:));
 }
 
 - (void)noop_application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken
@@ -132,6 +133,16 @@ void MethodSwizzle(Class c, SEL originalSelector) {
     // Call existing method
     [self swizzled_application:application didReceiveRemoteNotification:userInfo];
     [PFPush handlePush:userInfo];
+}
+
+- (void)swizzled_application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSString *str = [NSString stringWithFormat: @"Error: %@", err];
+    NSLog(@"Error:%@",str);
+}
+
+- (void)noop_application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSString *str = [NSString stringWithFormat: @"Error: %@", err];
+    NSLog(@"Error:%@",str);
 }
 
 @end
